@@ -181,5 +181,5 @@ void loop() {
     }
 
     Serial.println("Playback finished");
-    delay(1000);
+    delay(500);
 }
