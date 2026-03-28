@@ -61,9 +61,8 @@ void audioTask(void *pvParameters) {
             bool running = mp3->loop();
             xSemaphoreGive(audioMutex);
             if (!running) mp3->stop();
-        } else {
-            vTaskDelay(1);
         }
+        vTaskDelay(1); // yield every iteration regardless
     }
 }
 
@@ -131,42 +130,56 @@ void setup() {
 }
 
 void loop() {
-    Serial.println("Starting playback");
+    Serial.printf("Starting playback — free heap: %u bytes\n", ESP.getFreeHeap());
+
+    // Pause audio task before cleanup to avoid race condition
+    vTaskSuspend(audioTaskHandle);
+
+    binFile.seek(0);
+
+    if (mp3) {
+        mp3->stop();
+        delete mp3;
+        mp3 = nullptr;
+    }
+    if (audioFile) {
+        delete audioFile;
+        audioFile = nullptr;
+    }
 
     audioFile = new AudioFileSourceSD(AUDIO_FILE_LOCATION);
     mp3 = new AudioGeneratorMP3();
     mp3->begin(audioFile, audioOut);
 
+    // Resume audio task now that everything is ready
+    vTaskResume(audioTaskHandle);
+
     uint32_t startTime = millis();
     uint32_t currentFrame = 0;
 
-    while(currentFrame < totalFrames) {
+    while (currentFrame < totalFrames) {
         int rotaryReadings = readRotary();
-        if(rotaryReadings == 1) {
+        if (rotaryReadings == 1) {
             volume = min(100, volume + 2);
             xSemaphoreTake(audioMutex, portMAX_DELAY);
             audioOut->SetGain((float)volume / 100.0f);
             xSemaphoreGive(audioMutex);
-        }
-        else if(rotaryReadings == -1) {
+        } else if (rotaryReadings == -1) {
             volume = max(0, volume - 2);
             xSemaphoreTake(audioMutex, portMAX_DELAY);
             audioOut->SetGain((float)volume / 100.0f);
             xSemaphoreGive(audioMutex);
         }
-        
+
         uint32_t expectedFrame = (millis() - startTime) / (1000 / FPS);
-    
-        if(expectedFrame > currentFrame) {
+        if (expectedFrame > currentFrame) {
             showFrame(expectedFrame);
             currentFrame = expectedFrame;
         }
-        
-        // Small yield to keep the system stable
-        vTaskDelay(1); 
+
+        vTaskDelay(1);
     }
 
     Serial.println("Playback finished");
-    
     delay(1000);
 }
