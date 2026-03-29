@@ -69,7 +69,7 @@ void audioTask(void *pvParameters) {
 void awaitSdInit() {
     SD.end();
     Serial.print("Trying init SD");
-    while(!SD.begin(SD_CS, SPI, 8000000)) {
+    while(!SD.begin(SD_CS, SPI, 4000000)) {
         Serial.print(".");
         delay(500);
     }
