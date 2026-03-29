@@ -97,7 +97,7 @@ void setup() {
 
     audioOut = new AudioOutputI2S();
     audioOut->SetPinout(26, 25, 27);
-    audioOut->SetGain(0.25);
+    audioOut->SetGain((float)volume / 100.0f);
 
     audioMutex = xSemaphoreCreateMutex();
 
