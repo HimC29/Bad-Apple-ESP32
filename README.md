@@ -54,7 +54,7 @@ Audio and video run on separate cores for smooth playback
 The music video and audio used in this project are from the iconic Bad Apple!! Touhou fan video:
 
 > **Bad Apple!! feat.nomico** — Alstroemeria Records  
-> MV uploaded by [Anira☆](https://youtu.be/FtutLA63Cp8?si=1KIgajlmQthSrCgQ)
+> MV uploaded by [kasidid2](https://youtu.be/FtutLA63Cp8?si=1KIgajlmQthSrCgQ)
 
 All rights to the original music and video belong to their respective owners. This project is for personal/educational use only.
 
