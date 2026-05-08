@@ -162,7 +162,7 @@ In PlatformIO or Arduino IDE, install:
  
 ### 3. Get the audio
  
-Download the MP3 from the original video using a YouTube to MP3 converter like [ytmp3.sc](https://ytmp3.sc):
+Download the MP3 from the original video using a YouTube to MP3 converter like [HC-YT Downloader](https://github.com/HimC29/hc-yt-downloader):
  
 > **[【東方】Bad Apple!! ＰＶ【影絵】 — https://youtu.be/FtutLA63Cp8](https://youtu.be/FtutLA63Cp8?si=1KIgajlmQthSrCgQ)**
  
